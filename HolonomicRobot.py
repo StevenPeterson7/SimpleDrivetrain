@@ -70,6 +70,11 @@ class HolonomicRobot:
                     yaw_rot_vector = np.array([self.__CCW_direction_tuple[3][0], self.__CCW_direction_tuple[3][1]])
                     motor_vels[i] += rotation * np.dot(self.__CCW_direction_tuple, current_dir_vector)
 
+            #  scale each motor velocity by the maximum velocity
+            max_mag = max(map(abs, motor_vels))
+            if max_mag > 1.0:
+                motor_vels = map(lambda x: x / max_mag, motor_vels)
+
         return motor_vels
 
     #  rotation_vector = [yaw_rotation, pitching]
@@ -81,12 +86,17 @@ class HolonomicRobot:
             x = self.__motor_direction_tuple[i][0]
             y = self.__motor_direction_tuple[i][1]
             z = self.__motor_direction_tuple[i][2]
-            current_dir_vector = self.__rotate_vector([x, y, z], yaw, pitch)
+
+            #  Rotate each of the robot's local direction vectors according to
+            #  the robot's direction in the global plane as an offset.
+            #  This assumes the gyro considers CCW to be positive. If not, negate the yaw and/or pitch.
+            current_dir_vector = self.__rotate_vector([x, y, z], -yaw, -pitch)
             current_dir_vector = np.array(current_dir_vector)
+
             #  apply translation vector
             motor_vels[i] = np.dot(current_dir_vector, translation_vector)
 
-            #  apply any applicable rotation
+            #  apply any applicable rotation about the z-axis
             if x < 0:
                 if y > 0:
                     yaw_rot_vector = np.array([self.__CCW_direction_tuple[0][0], self.__CCW_direction_tuple[0][1]])
@@ -101,6 +111,11 @@ class HolonomicRobot:
                 elif y > 0:
                     yaw_rot_vector = np.array([self.__CCW_direction_tuple[3][0], self.__CCW_direction_tuple[3][1]])
                     motor_vels[i] += rotation_vector[0] * np.dot(yaw_rot_vector, current_dir_vector)
+
+            #  scale each motor velocity by the maximum velocity
+            max_mag = max(map(abs, motor_vels))
+            if max_mag > 1.0:
+                motor_vels = map(lambda x: x / max_mag, motor_vels)
 
         return motor_vels
 
