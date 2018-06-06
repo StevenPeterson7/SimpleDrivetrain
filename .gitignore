@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Pycharm user-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/modules.xml
+.idea/**/misc.xml
+.idea/**/dictionaries
+.idea/**/shelf
+*.iml
