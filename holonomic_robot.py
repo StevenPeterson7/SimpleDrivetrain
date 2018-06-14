@@ -36,13 +36,17 @@ class HolonomicRobot:
     #  rotation = (x-axis angular velocity, y-axis angular velocity, z-axis angular velocity)
     def get_motor_vels_local(self, translation, rotation):
         local_vector = translation
-        motor_vels = [x * 0.0 for x in range(0, len(self.__motor_dirs))]
+        motor_vels = []
 
         for i in range(0, len(self.__motor_dirs)):
-            motor_vels[i] = np.dot(self.__motor_dirs[i], local_vector)
+            motor_vels.append(np.dot(self.__motor_dirs[i], local_vector))
 
             #  TODO apply any applicable rotation
 
-        #  TODO scale each motor velocity by the maximum velocity
+        #  scale each motor velocity by the maximum velocity
+        mag_list = np.array(map(abs, motor_vels))
+        max_mag = mag_list.max()
+        if max_mag > 1.0:
+            motor_vels = map(lambda x: x / max_mag, motor_vels)
 
         return motor_vels
