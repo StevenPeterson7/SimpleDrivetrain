@@ -1,7 +1,21 @@
 # SimpleDrivetrain
-License MIT | Version v0.7
+Version: v0.7
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
+
+## Table of Contents
+* [Overview](#overview)
+* [Current Features](#current features)
+* [Roadmap](#roadmap)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [How to Use](#how to use)
+  - [Import simpledrivetrain](#import simpledrivetrain)
+  - [Creating a SimpleDrivetrain object](#creating a simpledrivetrain object)
+  - [Adding and removing drive motors](#adding and removing drive motors)
+  - [Updating drivetrain orientation](#updating drivetrain orientation)
+  - [Getting motor velocities](#getting motor velocities)
+* [License](#license)
 
 ## Overview
 SimpleDrivetrain provides an easy way to define a drivetrain by the location and orientation of its motors, and calculate the desired velocities for each motor given the overall desired translational velocity and rotational velocities for the drivetrain.
@@ -17,13 +31,13 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 * Control loop
 
 ## Requirements
-* Python 2.7+
+* Python 2.7+/3.5+
 * Numpy
 
 ## Installation
-* Install SimpleDrivetrain from PyPI by opening a terminal and typing the following command:
+Install SimpleDrivetrain from PyPI by opening a terminal and typing the following command:
 ```python
-python -m pip install simpledrivetrain
+$ pip install simpledrivetrain
 ```
 
 ## How to Use
@@ -73,3 +87,5 @@ drivetrain.orientation = (pitch, roll, yaw)
         ```python
         drivetrain.get_motor_vels_local(translation, rotation)
         ```
+## License
+SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#)
