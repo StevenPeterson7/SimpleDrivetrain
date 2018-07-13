@@ -36,7 +36,7 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 
 ## Installation
 Install SimpleDrivetrain from PyPI by opening a terminal and typing the following command:
-```python
+```
 $ pip install simpledrivetrain
 ```
 
@@ -88,4 +88,4 @@ drivetrain.orientation = (pitch, roll, yaw)
         drivetrain.get_motor_vels_local(translation, rotation)
         ```
 ## License
-SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#)
+SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#).
