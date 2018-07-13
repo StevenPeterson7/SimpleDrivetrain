@@ -5,16 +5,16 @@ A Python library that facilitates the control of robot drivetrains with complex 
 
 ## Table of Contents
 * [Overview](#overview)
-* [Current Features](#current features)
+* [Current Features](#current-features)
 * [Roadmap](#roadmap)
 * [Requirements](#requirements)
 * [Installation](#installation)
-* [How to Use](#how to use)
-  - [Import simpledrivetrain](#import simpledrivetrain)
-  - [Creating a SimpleDrivetrain object](#creating a simpledrivetrain object)
-  - [Adding and removing drive motors](#adding and removing drive motors)
-  - [Updating drivetrain orientation](#updating drivetrain orientation)
-  - [Getting motor velocities](#getting motor velocities)
+* [How to Use](#how-to-use)
+  - [Import simpledrivetrain](#import-simpledrivetrain)
+  - [Creating a SimpleDrivetrain object](#creating-a-simpledrivetrain-object)
+  - [Adding and removing drive motors](#adding-and-removing-drive-motors)
+  - [Updating drivetrain orientation](#updating-drivetrain-orientation)
+  - [Getting motor velocities](#getting-motor-velocities)
 * [License](#license)
 
 ## Overview
