@@ -95,3 +95,57 @@ class TestCaseSimpleDrivetrain(unittest.TestCase):
 
             for j in range(0, len(expected)):
                 self.__assertWithinRange(observed[j], expected[j], 0.02)
+
+    def test_get_motor_vels_field(self):
+
+        norm_const = np.sqrt(2.0) / 2.0
+
+        const_rot = (0.0, 0.0, 0.0)
+
+        north_orientation = (0.0, 0.0, np.pi / 2.0)
+        south_orientation = (0.0, 0.0, 3 * np.pi / 2.0)
+
+        test_inputs = [[norm_const, norm_const, 0.0],
+                       [0.0, 1.0, 0.0],
+                       [0.0, 0.0, 1.0]]
+
+        test_outputs_north = [[0.0, 1.0, 0.0, -1.0, 0.0, 0.0],
+                        [norm_const, norm_const, -norm_const, -norm_const, 0.0, 0.0],
+                        [0.0, 0.0, 0.0, 0.0, 1.0, 1.0]]
+
+        test_outputs_south = [[0.0, -1.0, 0.0, 1.0, 0.0, 0.0],
+                              [-norm_const, -norm_const, norm_const, norm_const, 0.0, 0.0],
+                              [0.0, 0.0, 0.0, 0.0, 1.0, 1.0]]
+
+        pwm_std = (1100, 1500, 1900)
+
+        fr = [[norm_const, norm_const, 0.0], [-norm_const, norm_const, 0.0], pwm_std]
+        fl = [[-norm_const, norm_const, 0.0], [norm_const, norm_const, 0.0], pwm_std]
+        bl = [[-norm_const, -norm_const, 0.0], [norm_const, -norm_const, 0.0], pwm_std]
+        br = [[norm_const, -norm_const, 0.0], [-norm_const, -norm_const, 0.0], pwm_std]
+        fu = [[0.0, 1.0, 0.0], [0.0, 0.0, 1.0], pwm_std]
+        bu = [[0.0, -1.0, 0.0], [0.0, 0.0, 1.0], pwm_std]
+
+        orientation = (0.0, 0.0, 0.0)
+
+        testbot = SimpleDrivetrain(orientation)
+        testbot.add_new_motor('fr', fr[0], fr[1], False, fr[2])
+        testbot.add_new_motor('fl', fl[0], fl[1], False, fl[2])
+        testbot.add_new_motor('bl', bl[0], bl[1], False, bl[2])
+        testbot.add_new_motor('br', br[0], br[1], False, br[2])
+        testbot.add_new_motor('fu', fu[0], fu[1], False, fu[2])
+        testbot.add_new_motor('bu', bu[0], bu[1], False, bu[2])
+
+        for i in range(0, len(test_inputs)):
+            observed = testbot.get_motor_vels_field(test_inputs[i], const_rot, north_orientation)
+            expected = test_outputs_north[i]
+
+            for j in range(0, len(expected)):
+                self.assertAlmostEqual(observed[j], expected[j])
+
+        for i in range(0, len(test_inputs)):
+            observed = testbot.get_motor_vels_field(test_inputs[i], const_rot, south_orientation)
+            expected = test_outputs_south[i]
+
+            for j in range(0, len(expected)):
+                self.assertAlmostEqual(observed[j], expected[j])

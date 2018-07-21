@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v0.7
+Version: v0.8
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
@@ -21,11 +21,11 @@ A Python library that facilitates the control of robot drivetrains with complex 
 SimpleDrivetrain provides an easy way to define a drivetrain by the location and orientation of its motors, and calculate the desired velocities for each motor given the overall desired translational velocity and rotational velocities for the drivetrain.
 
 ## Current Features
-* Local-oriented 3-axis translation and rotation
+* Local-oriented and field-oriented 3-axis translation and rotation
 * Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
 
 ## Roadmap
-* Field-oriented 3-axis translation and rotation
+* PWM scaling
 * Support for loading drivetrains from an XML file
 * Motion profiles
 * Control loop
@@ -43,11 +43,11 @@ $ pip install simpledrivetrain
 ## How to Use
 ### Import simpledrivetrain
 ```python
-import simpledrivetrain
+from simpledrivetrain.simple_drivetrain import SimpleDrivetrain
 ```
 ### Creating a SimpleDrivetrain object
 ```python
-drivetrain = simpledrivetrain.SimpleDrivetrain()
+drivetrain = SimpleDrivetrain()
 ```
 ### Adding and removing drive motors
 * Motors can be added to the drivetrain by calling the ```add_new_motor``` 
@@ -86,6 +86,18 @@ drivetrain.orientation = (pitch, roll, yaw)
         rotational velocity, e.g. [pitching, rolling, yawing]
         ```python
         drivetrain.get_motor_vels_local(translation, rotation)
+        ```
+* Field-oriented
+    * Motor velocities scaled in [-1, 1], stored in a list by order of motor 
+    addition, can be calculated by calling the
+    ```get_motor_vels_local``` method and supplying:
+      - ```translation```, a 3D vector representing the drivetrain's desired 
+        overall velocity, e.g. [x, y, z]
+      - ```rotation```, a 3D vector representing the drivetrain's desired 
+        rotational velocity, e.g. [pitching, rolling, yawing]
+      - ```orientation```, a 3D vector holding the robot's current 3-axis orientation in radians, e.g. [pitch, roll, yaw]
+        ```python
+        drivetrain.get_motor_vels_field(translation, rotation, orientation)
         ```
 ## License
 SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#).
