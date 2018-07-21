@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v0.8.1
+Version: v0.8.3
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
