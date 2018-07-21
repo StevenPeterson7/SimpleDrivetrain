@@ -12,7 +12,7 @@ A Python library that facilitates the control of robot drivetrains with complex 
 * [How to Use](#how-to-use)
   - [Import simpledrivetrain](#import-simpledrivetrain)
   - [Creating a SimpleDrivetrain object](#creating-a-simpledrivetrain-object)
-  - [Adding, removing, and accessing drive motors](#adding,-removing,-and-accessing-drive-motors)
+  - [Adding, removing, and accessing drive motors](#adding-removing-and-accessing-drive-motors)
   - [Updating drivetrain orientation](#updating-drivetrain-orientation)
   - [Getting motor velocities](#getting-motor-velocities)
 * [License](#license)
