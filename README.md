@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v0.8
+Version: v0.8.1
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
@@ -12,7 +12,7 @@ A Python library that facilitates the control of robot drivetrains with complex 
 * [How to Use](#how-to-use)
   - [Import simpledrivetrain](#import-simpledrivetrain)
   - [Creating a SimpleDrivetrain object](#creating-a-simpledrivetrain-object)
-  - [Adding and removing drive motors](#adding-and-removing-drive-motors)
+  - [Adding, removing, and accessing drive motors](#adding,-removing,-and-accessing-drive-motors)
   - [Updating drivetrain orientation](#updating-drivetrain-orientation)
   - [Getting motor velocities](#getting-motor-velocities)
 * [License](#license)
@@ -22,10 +22,9 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 
 ## Current Features
 * Local-oriented and field-oriented 3-axis translation and rotation
-* Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
 
 ## Roadmap
-* PWM scaling
+* Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
 * Support for loading drivetrains from an XML file
 * Motion profiles
 * Control loop
@@ -49,7 +48,7 @@ from simpledrivetrain.simple_drivetrain import SimpleDrivetrain
 ```python
 drivetrain = SimpleDrivetrain()
 ```
-### Adding and removing drive motors
+### Adding, removing, and accessing drive motors
 * Motors can be added to the drivetrain by calling the ```add_new_motor``` 
 method and supplying:
     - The ```name``` of the motor, a unique string identifier
@@ -71,33 +70,41 @@ method and supplying:
   ```python
   drivetrain.remove_motor_by_name(name)
   ```
+  alternatively, a motor can also be removed from the drivetrain by calling the 
+  ```remove_motor_by_index``` method and supplying the motor's ```index``` 
+  of addition
+  ```python
+  drivetrain.remove_motor_by_index(index)
+  ```
+* Motors can be accessed by calling the ```get_motor_by_name``` method and supplying 
+  the ```name``` of the motor to retrieve
+  ```python
+  Motor motor1 = drivetrain.get_motor_by_name(name)
+  ```
+  alternatively, a motor can also be accessed by calling ```get_motor_by_index``` 
+  method and supplying the motor's ```index``` of addition
+  ```python
+  Motor motor1 = drivetrain.get_motor_by_index(index)
+  ```  
+
 ### Updating drivetrain orientation
 ```python
 drivetrain.orientation = (pitch, roll, yaw)    
 ```
 ### Getting motor velocities
-* Local-oriented
-    * Motor velocities scaled in [-1, 1], stored in a list by order of motor 
+* Motor velocities scaled in [-1, 1], stored in a list by order of motor 
     addition, can be calculated by calling the
-    ```get_motor_vels_local``` method and supplying:
-      - ```translation```, a 3D vector representing the drivetrain's desired 
+    ```get_motor_vels``` method and supplying:
+    - ```translation```, a 3D vector representing the drivetrain's desired 
         overall velocity, e.g. [x, y, z]
-      - ```rotation```, a 3D vector representing the drivetrain's desired 
+    - ```rotation```, a 3D vector representing the drivetrain's desired 
         rotational velocity, e.g. [pitching, rolling, yawing]
+    - ```force_local_oriented```, a boolean value which, if set to true, 
+    ignores current drivetrain orientation and calculates local-oriented 
+    motor values. It is set to false by default.
         ```python
-        drivetrain.get_motor_vels_local(translation, rotation)
+        drivetrain.get_motor_vels(translation, rotation, force_local_oriented=False)
         ```
-* Field-oriented
-    * Motor velocities scaled in [-1, 1], stored in a list by order of motor 
-    addition, can be calculated by calling the
-    ```get_motor_vels_local``` method and supplying:
-      - ```translation```, a 3D vector representing the drivetrain's desired 
-        overall velocity, e.g. [x, y, z]
-      - ```rotation```, a 3D vector representing the drivetrain's desired 
-        rotational velocity, e.g. [pitching, rolling, yawing]
-      - ```orientation```, a 3D vector holding the robot's current 3-axis orientation in radians, e.g. [pitch, roll, yaw]
-        ```python
-        drivetrain.get_motor_vels_field(translation, rotation, orientation)
-        ```
+
 ## License
 SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#).
