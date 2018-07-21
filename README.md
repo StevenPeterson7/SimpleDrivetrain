@@ -79,12 +79,12 @@ method and supplying:
 * Motors can be accessed by calling the ```get_motor_by_name``` method and supplying 
   the ```name``` of the motor to retrieve
   ```python
-  Motor motor1 = drivetrain.get_motor_by_name(name)
+  motor = drivetrain.get_motor_by_name(name)
   ```
   alternatively, a motor can also be accessed by calling ```get_motor_by_index``` 
   method and supplying the motor's ```index``` of addition
   ```python
-  Motor motor1 = drivetrain.get_motor_by_index(index)
+  motor = drivetrain.get_motor_by_index(index)
   ```  
 
 ### Updating drivetrain orientation
