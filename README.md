@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v0.8.3
+Version: v0.9.0
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
@@ -22,9 +22,9 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 
 ## Current Features
 * Local-oriented and field-oriented 3-axis translation and rotation
+* Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
 
 ## Roadmap
-* Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
 * Support for loading drivetrains from an XML file
 * Motion profiles
 * Control loop
@@ -102,9 +102,17 @@ drivetrain.orientation = (pitch, roll, yaw)
     - ```force_local_oriented```, a boolean value which, if set to true, 
     ignores current drivetrain orientation and calculates local-oriented 
     motor values. It is set to false by default.
-        ```python
-        drivetrain.get_motor_vels(translation, rotation, force_local_oriented=False)
-        ```
+    ```python
+    drivetrain.get_motor_vels(translation, rotation, force_local_oriented=False)
+    ```
+* Motor velocities scaled according to user-defined, motor-level PWM ranges 
+    or scaling functions, stored in a list by order of motor addition, can be 
+    calculated by calling the ```get_motor_vels_scaled``` method and supplying
+    the same ```translation```, ```rotation```, and ```force_local_oriented```
+    parameters as the ```get_motor_vels``` method:
+    ```python
+    drivetrain.get_motor_vels_scaled(translation, rotation, force_local_oriented=False)
+    ```
 
 ## License
 SimpleDrivetrain is distributed under the terms of the [MIT License](https://choosealicense.com/licenses/mit/#).

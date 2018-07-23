@@ -152,3 +152,28 @@ class TestCaseSimpleDrivetrain(unittest.TestCase):
 
             for j in range(0, len(expected)):
                 self.assertAlmostEqual(observed[j], expected[j])
+
+    def test_get_motor_vels_scaled(self):
+        norm_const = np.sqrt(2.0) / 2.0
+        const_rot = [0.0, 0.0, 0.0]
+        pwm_bounds = [1100, 1500, 1900]
+
+        test_inputs = [[(norm_const, -norm_const, 0.0), const_rot],
+                       [(0.0, 0.0, 0.0), const_rot],
+                       [(-norm_const, norm_const, 0.0), const_rot]]
+
+        test_outputs = [[pwm_bounds[0]],
+                        [pwm_bounds[1]],
+                        [pwm_bounds[2]]]
+
+        fr = [[norm_const, norm_const, 0.0], [-norm_const, norm_const, 0.0], pwm_bounds]
+
+        bot = SimpleDrivetrain()
+        bot.add_new_motor('fr', fr[0], fr[1], False, fr[2])
+
+        for i in range(0, len(test_inputs)):
+            observed = bot.get_motor_vels_scaled(test_inputs[i][0], test_inputs[i][1])
+            expected = test_outputs[i]
+
+            for j in range(0, len(expected)):
+                self.assertEqual(expected[j], observed[j])

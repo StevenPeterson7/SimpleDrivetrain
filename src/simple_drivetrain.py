@@ -4,34 +4,38 @@ import vectorutils as vutils
 
 
 class SimpleDrivetrain(object):
-    def __init__(self, orientation=(0.0, 0.0, np.pi / 2.0), motor_list=[]):
-        self.__motors = motor_list
+    def __init__(self, orientation=(0.0, 0.0, np.pi / 2.0)):
+        self.__motors = None
         self.orientation = orientation
 
     def add_new_motor(self, name, position, direction, inverted=False, pwm_bounds=(0, 512, 1024), pwm_scaling_func=None):
-        self.__motors.append(Motor(name, position, direction, inverted, pwm_bounds, pwm_scaling_func))
+        if self.__motors is None:
+            self.__motors = [Motor(name, position, direction, inverted, pwm_bounds, pwm_scaling_func)]
+        else:
+            self.__motors.append(Motor(name, position, direction, inverted, pwm_bounds, pwm_scaling_func))
 
     def get_motor_by_index(self, index):
-        if 0 <= index < len(self.__motors):
-            return self.__motors[index]
-        else:
+        if (self.__motors is None) or not (0 <= index < len(self.__motors)):
             raise IndexError('Attempted to access a motor with an index that is out of bounds.')
+        return self.__motors[index]
 
     def get_motor_by_name(self, name):
-        for motor in self.__motors:
-            if motor.name == name:
-                return motor
+        if not (self.__motors is None):
+            for motor in self.__motors:
+                if motor.name == name:
+                    return motor
 
     def remove_motor_by_index(self, index):
-        if 0 <= index < len(self.__motors):
-            self.__motors.pop(index)
-        else:
+        if (self.__motors is None) or not (0 <= index < len(self.__motors)):
             raise IndexError('Attempted to remove a motor with an index that is out of bounds.')
+        else:
+            self.__motors.pop(index)
 
     def remove_motor_by_name(self, name):
-        for motor in self.__motors:
-            if motor.name == name:
-                self.__motors.remove(motor)
+        if not (self.__motors is None):
+            for motor in self.__motors:
+                if motor.name == name:
+                    self.__motors.remove(motor)
 
     #  translation = (x-axis translational velocity, y-axis translational velocity, z-axis translational velocity)
     #  rotation = (x-axis angular velocity, y-axis angular velocity, z-axis angular velocity)
@@ -39,6 +43,9 @@ class SimpleDrivetrain(object):
     #    If set to True, ignores current drivetrain orientation and calculates local-oriented motor values
     #    If set to False, uses current drivetrain orientation to calculate field-oriented motor values
     def get_motor_vels(self, translation, rotation, force_local_oriented=False):
+        if self.__motors is None:
+            raise RuntimeError("Attempted to get motor velocities for a drivetrain with an empty motor list.")
+
         global_vector = translation
         motor_vels = [x * 0.0 for x in range(0, len(self.__motors))]
         orientation_reference_vector = np.array((0.0, 0.0, np.pi / 2.0))
@@ -78,5 +85,18 @@ class SimpleDrivetrain(object):
         max_mag = mag_list.max()
         if max_mag > 1.0:
             motor_vels = map(lambda x: x / max_mag, motor_vels)
+
+        return motor_vels
+
+    #  translation = (x-axis translational velocity, y-axis translational velocity, z-axis translational velocity)
+    #  rotation = (x-axis angular velocity, y-axis angular velocity, z-axis angular velocity)
+    #  force_local_oriented is a boolean value
+    #    If set to True, ignores current drivetrain orientation and calculates local-oriented motor values
+    #    If set to False, uses current drivetrain orientation to calculate field-oriented motor values
+    def get_motor_vels_scaled(self, translation, rotation, force_local_oriented=False):
+        motor_vels = self.get_motor_vels(translation, rotation, force_local_oriented)
+
+        for i in range(0, len(self.__motors)):
+            motor_vels[i] = self.__motors[i].scale_velocity_to_pwm(motor_vels[i])
 
         return motor_vels
