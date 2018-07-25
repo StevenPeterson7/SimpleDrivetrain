@@ -1,12 +1,51 @@
 import numpy as np
 from motor import Motor
 import vectorutils as vutils
+from lxml import etree
 
 
 class SimpleDrivetrain(object):
     def __init__(self, orientation=(0.0, 0.0, np.pi / 2.0)):
         self.__motors = None
         self.orientation = orientation
+
+    def load_drivetrain_from_file(self, filepath):
+        root = etree.parse(filepath).getroot()
+
+        orientation_element = root.find('orientation')
+        if orientation_element is not None:
+            orientation_pitch = float(orientation_element.get('pitch'))
+            orientation_roll = float(orientation_element.get('roll'))
+            orientation_yaw = float(orientation_element.get('yaw'))
+            orientation = (orientation_pitch, orientation_roll, orientation_yaw)
+            self.orientation = orientation
+
+        for motor_element in root.findall('motor'):
+            name = motor_element.get('name')
+
+            inverted = False
+            if motor_element.get('inverted') == 'True':
+                inverted = True
+
+            position_element = motor_element.find('position')
+            position_x = float(position_element.get('x'))
+            position_y = float(position_element.get('y'))
+            position_z = float(position_element.get('z'))
+            position = (position_x, position_y, position_z)
+
+            direction_element = motor_element.find('direction')
+            direction_x = float(direction_element.get('x'))
+            direction_y = float(direction_element.get('y'))
+            direction_z = float(direction_element.get('z'))
+            direction = (direction_x, direction_y, direction_z)
+
+            pwm_bounds_element = motor_element.find('pwm_bounds')
+            pwm_reverse = int(pwm_bounds_element.get('reverse'))
+            pwm_stop = int(pwm_bounds_element.get('stop'))
+            pwm_forward = int(pwm_bounds_element.get('forward'))
+            pwm_bounds = (pwm_reverse, pwm_stop, pwm_forward)
+
+            self.add_new_motor(name, position, direction, inverted, pwm_bounds)
 
     def add_new_motor(self, name, position, direction, inverted=False, pwm_bounds=(0, 512, 1024), pwm_scaling_func=None):
         if self.__motors is None:
@@ -100,3 +139,28 @@ class SimpleDrivetrain(object):
             motor_vels[i] = self.__motors[i].scale_velocity_to_pwm(motor_vels[i])
 
         return motor_vels
+
+    @property
+    def motors(self):
+        return self.__motors
+
+    @motors.setter
+    def motors(self, value):
+        pass
+
+    def __str__(self):
+        outstr = self.__repr__() + '\n'
+
+        for motor in self.__motors:
+            outstr += '\tMotor ' + motor.name + ':\n'
+            outstr += '\t\tInverted: ' + str(motor.inverted) + '\n'
+            outstr += '\t\tPosition: ' + str(motor.position) + '\n'
+            outstr += '\t\tDirection: ' + str(motor.direction) + '\n'
+            outstr += '\t\tPWM Bounds: ' + str(motor.pwm_bounds) + '\n'
+            if motor._Motor__pwm_scaling_func is not None:
+                outstr += '\t\tPWM Scaling Function: Defined\n'
+            else:
+                outstr += '\t\tPWM Scaling Function: Undefined\n'
+
+        outstr += '\n'
+        return outstr

@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v0.9.0
+Version: v1.0.0
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
@@ -32,6 +32,7 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 ## Requirements
 * Python 2.7+/3.5+
 * Numpy
+* lxml
 
 ## Installation
 Install SimpleDrivetrain from PyPI by opening a terminal and typing the following command:
@@ -86,6 +87,18 @@ method and supplying:
   ```python
   motor = drivetrain.get_motor_by_index(index)
   ```  
+* Motors can also be accessed through the motors instance variable, which stores the 
+  motors by order of addition in a list
+  ```python
+  motorlist = drivetrain.motors
+  ```
+* Alternatively, motors and orientation can be loaded from an xml file by calling 
+  the ```load_drivetrain_from_file``` method and supplying the ```filepath``` string 
+  pointing to the xml file:
+  ```python
+  drivetrain.load_drivetrain_from_file(filepath)
+  ```
+  For an example file, see [Example SimpleDrivetrain xml FIle](tests/drivetrain_test.xml).
 
 ### Updating drivetrain orientation
 ```python

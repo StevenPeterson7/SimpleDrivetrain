@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
 from simple_drivetrain import SimpleDrivetrain
+from motor import Motor
 
 
 class TestCaseSimpleDrivetrain(unittest.TestCase):
@@ -177,3 +178,53 @@ class TestCaseSimpleDrivetrain(unittest.TestCase):
 
             for j in range(0, len(expected)):
                 self.assertEqual(expected[j], observed[j])
+
+    def test_load_drivetrain_from_file(self):
+        testbot = SimpleDrivetrain()
+        filepath = 'drivetrain_test.xml'
+        testbot.load_drivetrain_from_file(filepath)
+
+        observed_motors = testbot.motors
+
+        pwm_bounds_std = (1100, 1500, 1900)
+        norm_const = np.sqrt(2) / 2
+        expected_motors = [Motor('front_right', (1, 1, 0), (-norm_const, norm_const, 0), True, pwm_bounds_std),
+                           Motor('front_left', (-1, 1, 0), (norm_const, norm_const, 0), False, pwm_bounds_std),
+                           Motor('back_left', (-1, -1, 0), (norm_const, -norm_const, 0), False, pwm_bounds_std),
+                           Motor('back_right', (1, -1, 0), (-norm_const, -norm_const, 0), False, pwm_bounds_std),
+                           Motor('front_ascent', (0, 0.5, 0), (0, 0, 1), False, pwm_bounds_std),
+                           Motor('back_ascent', (0, -0.5, 0), (0, 0, 1), False, pwm_bounds_std)]
+
+        expected_orientation = (0, 0, 0)
+        observed_orientation = testbot.orientation
+
+        for i in range(0, len(expected_orientation)):
+            self.assertAlmostEqual(expected_orientation[i], observed_orientation[i])
+
+        for i in range(0, len(expected_motors)):
+            observed_motor = observed_motors[i]
+            expected_motor = expected_motors[i]
+
+            observed_name = observed_motor.name
+            expected_name = expected_motor.name
+
+            observed_inverted = observed_motor.inverted
+            expected_inverted = expected_motor.inverted
+
+            observed_position = observed_motor.position
+            expected_position = expected_motor.position
+
+            observed_direction = observed_motor.direction
+            expected_direction = expected_motor.direction
+
+            observed_pwm_bounds = observed_motor.pwm_bounds
+            expected_pwm_bounds = expected_motor.pwm_bounds
+
+            self.assertEqual(expected_name, observed_name)
+            self.assertEqual(expected_inverted, observed_inverted)
+            for j in range(0, len(expected_position)):
+                self.__assertWithinRange(expected_position[j], observed_position[j], 0.01)
+            for j in range(0, len(expected_direction)):
+                self.__assertWithinRange(expected_direction[j], observed_direction[j], 0.01)
+            for j in range(0, len(expected_pwm_bounds)):
+                self.assertEqual(expected_pwm_bounds[j], observed_pwm_bounds[j], 0.01)

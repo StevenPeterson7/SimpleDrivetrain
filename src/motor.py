@@ -105,6 +105,17 @@ class Motor(object):
         self.__angle_position = self.__calculate_angle_position()
 
     @property
+    def pwm_bounds(self):
+        return self.__pwm_bounds
+
+    @pwm_bounds.setter
+    def pwm_bounds(self, value):
+        if len(value) != 3:
+            raise ValueError('Motor pwm bounds must be of length 3. A pwm bound list of length ' + str(len(value))
+                             + ' was passed instead.')
+        self.__pwm_bounds = value
+
+    @property
     def angle_position(self):
         return self.__angle_position
 

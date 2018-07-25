@@ -1,0 +1,33 @@
+<SimpleDrivetrain>
+    <orientation pitch="0" roll="0" yaw="0" />
+    <motor name="front_right" inverted="True">
+        <position x="1" y="1" z="0" />
+        <direction x="-1" y="1" z="0" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+    <motor name="front_left" inverted="False" >
+        <position x="-1" y="1" z="0" />
+        <direction x="1" y="1" z="0" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+    <motor name="back_left">
+        <position x="-1" y="-1" z="0" />
+        <direction x="1" y="-1" z="0" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+    <motor name="back_right">
+        <position x="1" y="-1" z="0" />
+        <direction x="-1" y="-1" z="0" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+    <motor name="front_ascent">
+        <position x="0" y="0.5" z="0" />
+        <direction x="0" y="0" z="1" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+    <motor name="back_ascent">
+        <position x="0" y="-0.5" z="0" />
+        <direction x="0" y="0" z="1" />
+        <pwm_bounds reverse="1100" stop="1500" forward="1900" />
+    </motor>
+</SimpleDrivetrain>
