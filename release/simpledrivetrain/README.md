@@ -1,5 +1,5 @@
 # SimpleDrivetrain
-Version: v1.0.0
+Version: v1.0.1
 
 A Python library that facilitates the control of robot drivetrains with complex motor arrangements.
 
@@ -23,14 +23,14 @@ SimpleDrivetrain provides an easy way to define a drivetrain by the location and
 ## Current Features
 * Local-oriented and field-oriented 3-axis translation and rotation
 * Motor-level PWM scaling from user-defined PWM ranges or custom scaling functions
+* Support for loading drivetrains from an XML file
 
 ## Roadmap
-* Support for loading drivetrains from an XML file
 * Motion profiles
 * Control loop
 
 ## Requirements
-* Python 2.7+/3.5+
+* Python 2.7+/3.x
 * Numpy
 * lxml
 
