@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="simpledrivetrain",
-    version="1.0.1",
+    version="1.0.2",
     author="Cordell Michaud",
     author_email="michaudcordell@users.noreply.github.com",
     description="A Python library that facilitates the control of robot drivetrains with complex motor arrangements.",
