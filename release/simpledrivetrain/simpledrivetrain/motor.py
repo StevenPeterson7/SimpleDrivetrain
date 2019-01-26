@@ -43,15 +43,15 @@ class Motor(object):
 
         return strout
 
-    def scale_velocity_to_pwm(self, velocity):
+    def scale_thrust_to_pwm(self, thrust):
         if not (self.__pwm_scaling_func is None):
-            return self.__pwm_scaling_func(velocity)
+            return self.__pwm_scaling_func(thrust)
         else:  # pwm scaling function is not defined
-            if self.__symmetric or velocity > 0:
-                return int(self.__pwm_bounds[1] + (velocity * abs(self.__pwm_bounds[2] - self.__pwm_bounds[1])))
-            elif velocity < 0:
-                return int(self.__pwm_bounds[1] + (velocity * abs(self.__pwm_bounds[1] - self.__pwm_bounds[0])))
-            else:  # velocity == 0
+            if self.__symmetric or thrust > 0:
+                return int(self.__pwm_bounds[1] + (thrust * abs(self.__pwm_bounds[2] - self.__pwm_bounds[1])))
+            elif thrust < 0:
+                return int(self.__pwm_bounds[1] + (thrust * abs(self.__pwm_bounds[1] - self.__pwm_bounds[0])))
+            else:  # thrust == 0
                 return self.__pwm_bounds[1]
 
     def __calculate_angle_position(self):
